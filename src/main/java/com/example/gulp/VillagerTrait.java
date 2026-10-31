@@ -1,0 +1,134 @@
+package com.example.gulp;
+
+/**
+ * A pred or prey villager's temper: SHY or CONFIDENT. Normal villagers have none (NONE) and act as before.
+ * It comes from the villager's MCA personality (Shy, Sensitive, Gloomy, Grumpy = shy; Confident, Peppy, Athletic, Odd =
+ * confident). Villagers with any other personality get one or the other from their UUID, so it never changes.
+ * See McaIntegration.traitOf. The ordinal is what goes over the network (VillagerInfoPacket).
+ *
+ * Pred villagers (the ones who comfort you):
+ *  CONFIDENT  offers sooner (under 60% HP), needs fewer hearts (80%), asks again sooner, heals 15% faster
+ *  SHY        offers later (under 40% HP), needs more hearts (125%), asks again later, holds you 15% longer
+ * Prey villagers use the trait to decide how often and how readily they ask to be carried (McaIntegration.tickAffection).
+ */
+public enum VillagerTrait {
+    NONE("", 0.5f, 1.0, 1.0, 1.0f, 1.0f),
+    SHY("Shy", 0.4f, 1.25, 1.5, 1.0f, 1.15f),
+    CONFIDENT("Confident", 0.6f, 0.8, 0.75, 1.15f, 1.0f);
+
+    public final String label;
+    /** A hurt player is offered comfort when their health is at or under this share of their max. */
+    public final float comfortHpFraction;
+    /** Multiplies the hearts needed before they offer comfort. */
+    public final double heartsMult;
+    /** Multiplies the wait before they offer again. */
+    public final double cooldownMult;
+    /** Multiplies the HP healed per second. */
+    public final float healMult;
+    /** Multiplies how long they can hold you. */
+    public final float holdMult;
+
+    VillagerTrait(String label, float comfortHpFraction, double heartsMult, double cooldownMult, float healMult, float holdMult) {
+        this.label = label;
+        this.comfortHpFraction = comfortHpFraction;
+        this.heartsMult = heartsMult;
+        this.cooldownMult = cooldownMult;
+        this.healMult = healMult;
+        this.holdMult = holdMult;
+    }
+
+    public static VillagerTrait byId(int id) {
+        VillagerTrait[] v = values();
+        return id >= 0 && id < v.length ? v[id] : NONE;
+    }
+
+    /** What a pred says when they offer to comfort a hurt player. */
+    public String comfortOfferLine() {
+        return switch (this) {
+            case CONFIDENT -> "Whoa, you're hurt! Come here, let me patch you up in my tummy!";
+            case SHY -> "Um... you look hurt. Would you like to rest inside me for a bit? I'll be careful...";
+            case NONE -> "You look hurt. Would you like to rest in my tummy until you feel better?";
+        };
+    }
+
+    /** What a pred says when they start holding the player. */
+    public String holdLine() {
+        return switch (this) {
+            case CONFIDENT -> "Got you! Just relax, I've done this before.";
+            case SHY -> "Okay... there. Is it alright in there? Tell me if you want out...";
+            case NONE -> "There you go. Rest up.";
+        };
+    }
+
+    /** What a pred says when the rest ends on its own (healed or time up). */
+    public String finishLine() {
+        return switch (this) {
+            case CONFIDENT -> "Good as new! Anytime you need a tummy, you know where to find me.";
+            case SHY -> "Oh, you're better... I'm glad. Um, thank you for trusting me.";
+            case NONE -> "All done. Take care of yourself.";
+        };
+    }
+
+    /** What a villager says when you open a trade and their prices are lower for you. */
+    public String tradeDiscountLine() {
+        return switch (this) {
+            case CONFIDENT -> "For you? Best prices in the village!";
+            case SHY -> "Um... I made it a little cheaper for you. Since you're nice to me...";
+            case NONE -> "Friends get a better price.";
+        };
+    }
+
+    /** What a villager says when you open a trade and their prices are higher for you. */
+    public String tradeSurchargeLine() {
+        return switch (this) {
+            case CONFIDENT -> "Prices are what they are. Take it or leave it.";
+            case SHY -> "S-sorry... it costs a bit more for people I don't know well.";
+            case NONE -> "I don't know you well enough for the usual price.";
+        };
+    }
+
+    /** What a pred says instead of offering comfort when they don't like the hurt player. */
+    public String snubLine() {
+        return switch (this) {
+            case CONFIDENT -> "Hurt? Sounds like your problem. Maybe be nicer to people next time.";
+            case SHY -> "Um... you look hurt, but... I don't really want to be near you right now.";
+            case NONE -> "I'm not helping you.";
+        };
+    }
+
+    /** What a pred says when they offer a cosy cuddle to a player who is not hurt (they like you a lot). */
+    public String cuddleOfferLine() {
+        return switch (this) {
+            case CONFIDENT -> "Hey you! Feel like a cuddle in my tummy? I'm in a great mood!";
+            case SHY -> "Um... would you like to... stay in my tummy for a little while? Only if you want to...";
+            case NONE -> "Would you like a cosy rest in my tummy?";
+        };
+    }
+
+    /** What a pred says when a cuddle starts. */
+    public String cuddleHoldLine() {
+        return switch (this) {
+            case CONFIDENT -> "Come here, you. There. Nice and cosy, right?";
+            case SHY -> "T-there... is that okay? I'm happy you said yes...";
+            case NONE -> "There you go. Nice and cosy.";
+        };
+    }
+
+    /** What a pred says when a cuddle ends on its own. */
+    public String cuddleFinishLine() {
+        return switch (this) {
+            case CONFIDENT -> "That was great! We should do that again soon.";
+            case SHY -> "Thank you for staying... that meant a lot to me.";
+            case NONE -> "That was nice. Thanks for the company.";
+        };
+    }
+
+    /** What a pred says when the player climbs out early. */
+    public String earlyExitLine() {
+        return switch (this) {
+            case CONFIDENT -> "Already? Fine, but don't push yourself!";
+            case SHY -> "O-okay, I hope I didn't do anything wrong...";
+            case NONE -> "Okay, take it easy.";
+        };
+    }
+}
