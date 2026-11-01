@@ -107,9 +107,6 @@ Install Minecraft Forge for 1.20.1, then put gulp-0.1.0.jar in the mods folder. 
     is no prompt. Swords, axes, tridents, shears and arrows always count; edit data/gulp/tags/items/stomach_hazardous.json for the rest.
   - Nested weighting: shulker boxes and bundles weigh their contents (each item like a stack in a slot, times nestedWeightMultiplier,
     default 1.0, on top of the box itself), so the item belly grows with what is inside. Code: Stomach.weightOf.
-- Dev shortcut: press 1 and P together for one instant stomach level (normal level-up: points, sound, message; works for any role,
-  not while a menu or chat is open). Allowed when the server config devLevelUpKey is true (the default for now), or for operators.
-  Set devLevelUpKey to false before releasing.
 - Instant digest toggle: the Digest button next to each mob on the stomach screen is OFF by default. Each player turns it on in
   Settings > Toggles ("Instant digest button"). It is saved with the stomach (older saves start with it off) and the server refuses the digest
   action while it is off, not just the button. Hard-mode digestion over time is not affected. Code: Stomach.instantDigest, action 17.
@@ -334,8 +331,6 @@ Replace logo.png with your own 256x256 art any time.
   every safe ride) and Parting Gift (XP for the player after a 30 s+ ride, once per 10 minutes per villager); normal villagers get
   Haggler (5% off trades per rank), Chatty (+1 XP per rank when you talk) and Warm Welcome (+1 heart per rank when you talk).
   Same slots and points for everyone. Network protocol is now 8.
-- Dev buttons on the Perks screen (Dev +1 level, Dev Max, Dev Reset perks): only shown to operators, checked again on the server
-  (action 23), switch devButtonsEnabled. Turn it off before handing the mod to players.
 - The Perks button hides on MCA's Talk and Interact pages (they have a Back button) and each change of page is logged once in
   latest.log as "[Gulp] MCA villager screen is now: ...", so a wrong guess can be fixed from the log.
 
@@ -346,7 +341,6 @@ Replace logo.png with your own 256x256 art any time.
   (VillagerData.java, saved as gulp_villagers) instead of in the entity's persistent data, because MCA villagers could share that
   data and levelling one levelled all of them. Villagers start fresh after this update (the old data was not copied, because it
   was the shared kind). Take items out of villager storage before updating a world you care about.
-- The dev buttons now say why they did nothing (child or teen, too far) and name the villager they changed with its entity id.
 
 - Fixed: the Perks screen sent the perk number in 2 bits, which only fits 4 perks. With 11 perks, clicking Second Wind bought Soothing
   Touch (on the villager with the next entity id!) and the prey and normal perks were refused. It is now 4 bits (action 21 = entity
