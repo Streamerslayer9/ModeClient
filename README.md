@@ -362,3 +362,30 @@ Replace logo.png with your own 256x256 art any time.
   Switch: nestedSwallowEnabled; with it off the held player simply tumbles out beside the villager when it is swallowed.
 - Children and teens: the villager screen shows no Perks button, no Type box and no level bar for them. The info packet now says
   whether the villager is an adult (network protocol 9).
+
+## Climb In, outcomes by villager kind, and asking a villager to become a pred
+
+- **Climb In** (Perks screen, any adult villager, role Prey or Both, soft only): you force yourself into the villager's tummy whether
+  they are a pred, a prey or a normal villager. Settings: mcaForceSwallowEnabled, mcaForceSwallowCooldownSeconds (default 120). You can
+  always get out with Release (G).
+- **What happens** depends on the base type and the temper (shy / confident; normal villagers use their MCA personality, in between =
+  easygoing). Code: ForcedOutcome.of. Losses are halved with a villager who likes you (mcaAffectionHearts) and 1.5x with one who is
+  cold to you (mcaLowAffectionHearts).
+
+  | Villager | Hearts | They put up with you | Healing | Extra |
+  |---|---|---|---|---|
+  | Pred, confident | +4 | normal cuddle | full | normal cuddle rewards |
+  | Pred, shy | +1 | normal cuddle | full | normal cuddle rewards |
+  | Prey, confident | -8 | 20 s | half | squirming costs hearts |
+  | Prey, shy | -12 | 10 s | none | runs off in a panic afterwards |
+  | Normal, confident | -5 | 25 s | half | |
+  | Normal, shy | -9 | 12 s | none | runs off in a panic afterwards |
+  | Normal, easygoing | -6 | 20 s | half | |
+
+  Every outcome has its own lines when you climb in, while you are inside (every ~20 s), when they let you out and when you climb out
+  early. Preds also have new idle lines while they hold you in comfort and cuddles.
+- **Ask to be a Pred** (Perks screen, prey and normal adult villagers): if the villager has enough hearts with you they agree and
+  become a pred for good (mcaConvertEnabled, mcaConvertHearts default 80; shy x1.25, confident x0.8). They get the pred perk list; the
+  perks they had are forgotten and the points come back. Otherwise they refuse in their own voice and the chat tells you how many
+  hearts you need. The change is saved under the villager (VillagerData key gulp_kind).
+- New actions: 24 Climb In, 25 Ask to be a Pred (arg = villager entity id).
