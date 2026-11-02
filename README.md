@@ -396,10 +396,15 @@ Replace logo.png with your own 256x256 art any time.
   themselves; before, they stayed open on top of the villager's-eye view.
 - **Angry grab:** a pred villager (not prey or normal ones) whose hearts for a player are at or below mcaLowAffectionHearts (shy
   preds: twice as low) may swallow that player without asking, if the player's role is Prey or Both and they are within 5 blocks.
-  Checked every 5 seconds; confident preds do it more readily. It never hurts and gives no healing. The Release key does not work:
+  Checked every 5 seconds; confident preds do it more readily. It gives no healing. The Release key does not work:
   the player has to struggle (Struggle key), with the same chance as struggling out of a player (playerStruggleChance, a little lower
-  for a higher-level villager), and the villager lets go after mcaHostileHoldSeconds (45). The HUD shows "[ANGRY]" with the
+  for a higher-level villager), and if they are still inside after mcaHostileHoldSeconds (45) the villager digests them (see below). The HUD shows "[ANGRY]" with the
   chance. Not creative or spectator players. Settings: mcaHostileSwallowEnabled, mcaHostileCooldownSeconds (300, per player and per
   villager), mcaHostileHoldSeconds.
 - New voice lines for it (VillagerTrait.hostile*): the grab, idle lines while they hold you, a failed struggle, breaking free, being
   let go on their own, and refusing your Release key; each in a shy, a confident and an easygoing version.
+- **Digested for not fighting back** (mcaHostileKills, default on): when the time runs out and the player is still inside, the villager
+  digests them. The player dies, their whole inventory (main, armour, off-hand) goes into the villager's storage (what does not fit
+  drops at the villager; with villager storage turned off everything drops there), and the villager says a line like "well, now it's
+  my stuff". Warnings in chat at half time and 10 seconds before the end; the HUD says "Break free in time, or they will digest you!".
+  Only if the player's role still allows being eaten; totems of undying don't help. With the setting off the villager just lets go.
