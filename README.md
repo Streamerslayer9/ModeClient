@@ -389,3 +389,17 @@ Replace logo.png with your own 256x256 art any time.
   perks they had are forgotten and the points come back. Otherwise they refuse in their own voice and the chat tells you how many
   hearts you need. The change is saved under the villager (VillagerData key gulp_kind).
 - New actions: 24 Climb In, 25 Ask to be a Pred (arg = villager entity id).
+
+## Angry preds, and the menu closing when you are swallowed
+
+- When a villager swallows you (Climb In, comfort, cuddle or an angry grab) the MCA villager menu and the Perks screen now close by
+  themselves; before, they stayed open on top of the villager's-eye view.
+- **Angry grab:** a pred villager (not prey or normal ones) whose hearts for a player are at or below mcaLowAffectionHearts (shy
+  preds: twice as low) may swallow that player without asking, if the player's role is Prey or Both and they are within 5 blocks.
+  Checked every 5 seconds; confident preds do it more readily. It never hurts and gives no healing. The Release key does not work:
+  the player has to struggle (Struggle key), with the same chance as struggling out of a player (playerStruggleChance, a little lower
+  for a higher-level villager), and the villager lets go after mcaHostileHoldSeconds (45). The HUD shows "[ANGRY]" with the
+  chance. Not creative or spectator players. Settings: mcaHostileSwallowEnabled, mcaHostileCooldownSeconds (300, per player and per
+  villager), mcaHostileHoldSeconds.
+- New voice lines for it (VillagerTrait.hostile*): the grab, idle lines while they hold you, a failed struggle, breaking free, being
+  let go on their own, and refusing your Release key; each in a shy, a confident and an easygoing version.
