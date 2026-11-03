@@ -419,3 +419,7 @@ Replace logo.png with your own 256x256 art any time.
 - **Death and grave mods:** the stored stomach items are first moved into the player's inventory when they die (before grave mods look
   at it), so they go wherever the rest of the player's things go; what does not fit is added to the death drops. Before, they were
   dropped on the ground separately, which grave mods did not collect. With keepInventory on nothing changes: they stay in the stomach.
+- **Grave mod compatibility, broader:** the stomach items now move into the player's inventory at the lethal hit already (LivingDamageEvent,
+  highest priority, skipped when a totem saves the player) and again at the death event, so they are in the inventory whenever a grave mod
+  reads it. Whatever does not fit is added to the death drops (highest priority) for mods that collect the drops. Works with any grave
+  mod that collects the player's inventory or drops the normal way. With keepInventory on nothing changes.

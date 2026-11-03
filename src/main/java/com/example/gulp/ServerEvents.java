@@ -178,6 +178,15 @@ public final class ServerEvents {
         if (e.getEntity() instanceof ServerPlayer p) StomachLogic.releaseAll(p);
     }
 
+    // A hit that is going to kill the player: do the same one step earlier, before the death event, so that even grave mods that grab and
+    // clear the inventory at the very start of the death event find the stomach items in it. (Skipped when a totem will save them.)
+    @SubscribeEvent(priority = net.minecraftforge.eventbus.api.EventPriority.HIGHEST)
+    public static void onLethalDamage(net.minecraftforge.event.entity.living.LivingDamageEvent e) {
+        if (!(e.getEntity() instanceof ServerPlayer p) || p.getHealth() - e.getAmount() > 0f) return;
+        if (p.getMainHandItem().is(net.minecraft.world.item.Items.TOTEM_OF_UNDYING) || p.getOffhandItem().is(net.minecraft.world.item.Items.TOTEM_OF_UNDYING)) return;
+        StomachLogic.stomachItemsToInventory(p);
+    }
+
     // The stored stomach items go into the player's inventory first (before grave mods read it), so they end up wherever the rest of the
     // player's things do: on the ground, or in a grave.
     @SubscribeEvent(priority = net.minecraftforge.eventbus.api.EventPriority.HIGHEST)
