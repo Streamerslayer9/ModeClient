@@ -423,3 +423,18 @@ Replace logo.png with your own 256x256 art any time.
   highest priority, skipped when a totem saves the player) and again at the death event, so they are in the inventory whenever a grave mod
   reads it. Whatever does not fit is added to the death drops (highest priority) for mods that collect the drops. Works with any grave
   mod that collects the player's inventory or drops the normal way. With keepInventory on nothing changes.
+
+## CPM belly animation resetting (Flamevore)
+
+- When a player's swallowing system is **Flamevore**, Gulp no longer sets any animation on their Custom Player Model. Before, Gulp could
+  find the same belly animation Flamevore drives (the names belly, stomach ... are tried), set it to flat while Gulp's own stomach was
+  empty, and re-send it every 10 seconds, so the belly went flat, played once, and went flat again.
+- In Gulp mode: an animation that is never started is no longer sent a 0 (nothing to switch off); plain on/off belly animations are on
+  whenever anything is in the stomach instead of flipping at 50% (each flip restarted it); and the 10-second re-send only happens for real
+  sliders above zero.
+
+## Perks button on married villagers
+
+- The Perks button was only created when the MCA villager menu had a gap in its right-hand button column (above Family Tree). A married
+  villager's menu has a different set of buttons, so there was no gap and the button never appeared. It is now always created and shown on
+  every page of the menu that has no Back button (the main page), whoever the villager is.
