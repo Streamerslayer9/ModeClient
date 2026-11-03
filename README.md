@@ -408,3 +408,14 @@ Replace logo.png with your own 256x256 art any time.
   drops at the villager; with villager storage turned off everything drops there), and the villager says a line like "well, now it's
   my stuff". Warnings in chat at half time and 10 seconds before the end; the HUD says "Break free in time, or they will digest you!".
   Only if the player's role still allows being eaten; totems of undying don't help. With the setting off the villager just lets go.
+
+## More items break down, and stomach items on death with grave mods
+
+- **Deconstruction** (hard mode and the Eat buttons) now also covers non-damageable items listed in the tag `gulp:stomach_deconstruct`:
+  anvils (3 iron blocks + 4 iron ingots; chipped and damaged ones give less), lodestone (8 chiseled stone bricks + a netherite ingot),
+  cauldron, hopper, bucket, compass, clock and minecart. Items with no recipe in vanilla have built-in parts: saddle (5 leather) and
+  horse armor (7 leather / iron ingots / gold ingots / diamonds), and netherite tools and armor (made at a smithing table in vanilla), which break into the diamond piece + a netherite ingot (the diamond piece can then be broken down again). Add more items to the tag with a datapack
+  (data/gulp/tags/items/stomach_deconstruct.json).
+- **Death and grave mods:** the stored stomach items are first moved into the player's inventory when they die (before grave mods look
+  at it), so they go wherever the rest of the player's things go; what does not fit is added to the death drops. Before, they were
+  dropped on the ground separately, which grave mods did not collect. With keepInventory on nothing changes: they stay in the stomach.
