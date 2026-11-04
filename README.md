@@ -438,3 +438,19 @@ Replace logo.png with your own 256x256 art any time.
 - The Perks button was only created when the MCA villager menu had a gap in its right-hand button column (above Family Tree). A married
   villager's menu has a different set of buttons, so there was no gap and the button never appeared. It is now always created and shown on
   every page of the menu that has no Back button (the main page), whoever the villager is.
+
+## Four more places to hold prey: Breast, Cock, Unbirth, Tail
+
+- **Where it goes:** the stomach screen has a tab per place (Stomach, Breast, Cock, Unbirth, Tail). The tab you pick is where the next thing you
+  swallow goes (mobs, villagers and players), and its tab shows what is in it. The HUD shows the place's name, its soft / hard setting and its fill.
+  Each place holds its own prey and has its own room (as big as the stomach); the stomach is still what makes the belly grow. Older saves
+  are all in the stomach. Setting: multiOrgansEnabled (default on; off = everything goes to the stomach).
+- **Independent soft / hard:** every place has its own switch (the Soft mode / Hard mode button on the screen changes the tab you are on, the
+  hard-mode key changes the place you swallow into), so the stomach can be soft while the cock is hard. Prey in a hard place is digested
+  as before (mobs); a player keeps the mode they were swallowed under. The server's hardModeEnabled still has the last word.
+  Stored in Stomach.hard (stomach) and Stomach.hardOrgans, per entry "Organ" (Organ.java).
+- **Tail:** prey spend tailTransitSeconds (30) in the tail, shown as a blue bar, and then move to the stomach. If the stomach has no room they
+  wait in the tail and you are told.
+- **Unbirth:** when prey struggles you get nausea for 1 to unbirthNauseaMaxSeconds (2) seconds. Mobs squirm now and then, even in soft mode;
+  a swallowed player doing Struggle (R) causes it too (soft wall rub or hard struggle). The nausea goes to the one carrying them.
+- Network protocol is now 10: everyone has to update the mod together (server and clients).
